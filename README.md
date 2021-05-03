@@ -2,6 +2,8 @@
 
 ----------------------------------------
 
+const https = require('https');
+
 exports.handler = async (event) => {
     
     let historial = event.historial_clinico;
@@ -10,21 +12,44 @@ exports.handler = async (event) => {
     let edad = event.edad;
     let ocupacion = event.ocupacion;
     
-    var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                //this.responseText
-                 const response = {
+    const data = JSON.stringify({
+        "text": historial
+    });
+    
+    const options = {
+        hostname: 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/f0f8edda-af29-4075-a8f7-eea14df40262/v1/analyze?version=2021-03-25',
+        port: 80,
+        path: '/',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length,
+        },
+        
+    };
+    
+    const req = https.request(options, (res) => {
+        console.log(`statusCode: ${res.statusCode}`)
+        
+        
+        res.on('data', (d) => {
+            process.stdout.write(d)
+            
+            
+        })
+    });
+    
+    req.on('error', (error) => {
+        console.error(error)
+    });
+    
+   const response = {
                      statusCode: 200,
-                     body: JSON.stringify(this.responseText),
+                     body: req,
                      };
-                return response;
-                
-            }
-        };
-        xhttp.open("POST", "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/f0f8edda-af29-4075-a8f7-eea14df40262", true);
-        xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(JSON.stringify({
-            "text": historial
-        }));
+    
+    req.end();
+    return response;
+    
 };
+
