@@ -8,7 +8,7 @@ exports.handler = async (event) => {
     let nombre = event.nombre;
     let curp = event.curp;
     let edad = event.edad;
-    let ocupacion = event.ocupación;
+    let ocupacion = event.ocupacion;
     
     var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
