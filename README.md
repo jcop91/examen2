@@ -22,7 +22,7 @@ exports.handler = async (event) => {
                 
             }
         };
-        xhttp.open("POST", "http://ortiz-examen-nlu.eu-gb.mybluemix.net/toneAnalyzer", true);
+        xhttp.open("POST", "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/f0f8edda-af29-4075-a8f7-eea14df40262", true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send(JSON.stringify({
             "text": historial
